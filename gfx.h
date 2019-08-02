@@ -11,6 +11,8 @@
 void init_sdl(void);
 void close_sdl(void);
 void draw(void);
+void draw_bobs(struct bob *bobs, int count, int to_size, int rx, int gx, 
+        int bx, int angle);
 void update(void);
 
 extern void die(char *message);

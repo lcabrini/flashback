@@ -15,6 +15,6 @@ struct bob
 
 struct bob *build_bob_list(void);
 void destroy_bob_list(struct bob *list);
-void draw_bobs(void);
+//void draw_bobs(void);
 
 #endif /* BOBS_H */

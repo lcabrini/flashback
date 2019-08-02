@@ -61,15 +61,9 @@ void draw(void)
     int a;
     float r;
     int w;
-    SDL_Rect sr, dr;
-    SDL_Texture *t;
+    //SDL_Rect sr, dr;
+    //SDL_Texture *t;
 
-    t = SDL_CreateTexture(
-            renderer,
-            SDL_PIXELFORMAT_ARGB8888,
-            SDL_TEXTUREACCESS_TARGET,
-            50,
-            50);
     SDL_SetRenderTarget(renderer, texture);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -80,9 +74,9 @@ void draw(void)
     c = head_bob;
     a = 0;
     w = 0;
+    /*
     for (i = 0; i < bob_count; ++i)
     {
-        /*
         r = 3.14159 * i / 180;
         x = (int)(400 + 
                 400 * sin(r * 2) * cos(r * 3));
@@ -92,7 +86,7 @@ void draw(void)
         //s.y = y;
         //s.w = 30;
         //s.h = 30;
-        */
+        
         SDL_SetRenderTarget(renderer, t);
         if (i % 3 == 0)
             SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -100,9 +94,9 @@ void draw(void)
             SDL_SetRenderDrawColor(renderer, 60, 60, 255, 255);
         else 
             SDL_SetRenderDrawColor(renderer, 180, 180, 255, 255);
-
         SDL_SetRenderDrawColor(renderer, i*10, i*10, 0, 255);
         SDL_RenderClear(renderer);
+        
 
         SDL_SetRenderTarget(renderer, texture);
         sr.x = 0;
@@ -128,12 +122,11 @@ void draw(void)
         c = c->next;
         if (w < bob_size) ++w;
     }
-
+    */
     /* END TEMP */
 
-    SDL_DestroyTexture(t);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_SetRenderTarget(renderer, NULL);
+    draw_bobs(head_bob, bob_count, bob_size, 10, 10, 0, angle);
+
     head_bob = head_bob->next;
     if (bob_count < 25) ++bob_count;
     angle += 10;
@@ -142,6 +135,49 @@ void draw(void)
     ++move_count;
     if (move_count > 150)
        --bob_size;
+}
+
+void draw_bobs(struct bob *bobs, int count, int to_size, int rx, int gx, 
+        int bx, int angle)
+{
+    SDL_Texture *t;
+    SDL_Rect sr, dr;
+    int w;
+    int i;
+
+    t = SDL_CreateTexture(
+            renderer,
+            SDL_PIXELFORMAT_ARGB8888,
+            SDL_TEXTUREACCESS_TARGET,
+            50,
+            50);
+    w = 0;
+
+    for (i = 0; i < count; ++i)
+    {
+        SDL_SetRenderTarget(renderer, t);
+        SDL_SetRenderDrawColor(renderer, i * rx, i * gx, i * bx, 0);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderTarget(renderer, texture);
+
+        sr.x = 0;
+        sr.y = 0;
+        sr.w = w;
+        sr.h = w;
+
+        dr.x = bobs->x;
+        dr.y = bobs->y;
+        dr.w = w;
+        dr.h = w;
+
+        SDL_RenderCopyEx(renderer, t, &sr, &dr, angle, NULL, 0);
+        bobs = bobs->next;
+        if (w < to_size) ++w;
+    }
+
+    SDL_DestroyTexture(t);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 void update(void)

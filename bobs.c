@@ -35,6 +35,8 @@ void destroy_bob_list(struct bob *list)
 {
 }
 
+/*
 void draw_bobs(void)
 {
 }
+*/
