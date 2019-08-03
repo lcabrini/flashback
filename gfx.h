@@ -22,7 +22,10 @@ SDL_Renderer *renderer;
 SDL_Texture *texture;
 
 int bob_count;
-struct bob *head_bob;
+//struct bob *head_bob;
+struct bob_list *bob_lists;
+struct bob_list *current_bob_list;
+struct bob_list *fading_bob_list;
 int angle;
 int move_count;
 int bob_size;

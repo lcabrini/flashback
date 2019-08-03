@@ -35,7 +35,11 @@ void init_sdl(void)
         die("Could not create texture");
 
     bob_count = 1;
-    head_bob = build_bob_list();
+    //head_bob = build_bob_list();
+    current_bob_list = build_bob_lists();
+    current_bob_list->size = 50;
+    current_bob_list->count = 1;
+    fading_bob_list = NULL;
     angle = 0;
     bob_size = 50;
     move_count = 0;
@@ -56,6 +60,7 @@ void close_sdl(void)
 void draw(void)
 {
     struct bob *c;
+    //struct bob *p;
     int i;
     int x, y;
     int a;
@@ -70,10 +75,10 @@ void draw(void)
 
     /* TEMP */
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-    c = head_bob;
-    a = 0;
-    w = 0;
+    //SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    c = current_bob_list->head; //head_bob;
+    //a = 0;
+    //w = 0;
     /*
     for (i = 0; i < bob_count; ++i)
     {
@@ -124,10 +129,62 @@ void draw(void)
     }
     */
     /* END TEMP */
+    //draw_bobs(head_bob, bob_count, bob_size, 10, 10, 0, angle);
 
-    draw_bobs(head_bob, bob_count, bob_size, 10, 10, 0, angle);
+printf("bob count: %d\n", current_bob_list->count);
+printf("current bob x: %d, y: %d\n", c->x, c->y);
+    draw_bobs(
+            c, 
+            current_bob_list->count, 
+            current_bob_list->size, 
+            current_bob_list->rx, 
+            current_bob_list->gx, 
+            current_bob_list->bx, 
+            current_bob_list->angle);
 
-    head_bob = head_bob->next;
+    puts("pass 0");
+    if (fading_bob_list)
+    {
+        puts("fade 0");
+        draw_bobs(
+                fading_bob_list->head,
+                fading_bob_list->count, 
+                fading_bob_list->size, 
+                fading_bob_list->rx, 
+                fading_bob_list->gx, 
+                fading_bob_list->bx, 
+                fading_bob_list->angle);
+        fading_bob_list->head = fading_bob_list->head->next;
+        (fading_bob_list->size) -= 2;
+        (fading_bob_list->angle) += 10;
+        if (fading_bob_list->angle > 359) (fading_bob_list->angle) -= 359;
+        ++(fading_bob_list->frame);
+        if (fading_bob_list->size < 1)
+            fading_bob_list = NULL;
+    }
+
+    puts("pass 1");
+    current_bob_list->head = current_bob_list->head->next;
+    if (current_bob_list->count < 25) ++(current_bob_list->count);
+printf("count: %d\n", current_bob_list->count);
+    (current_bob_list->angle) += 10;
+    if (current_bob_list->angle > 359) (current_bob_list->angle) -= 359;
+    ++(current_bob_list->frame);
+    puts("pass 2");
+    if (current_bob_list->frame > current_bob_list->play_time)
+    {
+        fading_bob_list = current_bob_list;
+        puts("pass 3");
+        current_bob_list = current_bob_list->next;
+        puts("pass 4");
+        //c = bob_lists->head;
+        current_bob_list->size = 50;
+        current_bob_list->count = 1;
+        current_bob_list->frame = 0;
+    }
+
+    /*
+    //head_bob = head_bob->next;
     if (bob_count < 25) ++bob_count;
     angle += 10;
     if (angle > 359)
@@ -135,6 +192,7 @@ void draw(void)
     ++move_count;
     if (move_count > 150)
        --bob_size;
+       */
 }
 
 void draw_bobs(struct bob *bobs, int count, int to_size, int rx, int gx, 
@@ -171,8 +229,8 @@ void draw_bobs(struct bob *bobs, int count, int to_size, int rx, int gx,
         dr.h = w;
 
         SDL_RenderCopyEx(renderer, t, &sr, &dr, angle, NULL, 0);
-        bobs = bobs->next;
         if (w < to_size) ++w;
+        bobs = bobs->next;
     }
 
     SDL_DestroyTexture(t);
