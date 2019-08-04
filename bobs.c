@@ -64,6 +64,69 @@ struct bob *build_bob_list2(void)
     return h;
 }
 
+struct bob *build_bob_list4(void)
+{
+    struct bob *h = NULL;
+    struct bob *c;
+    struct bob *p = NULL;
+    float r;
+    int a;
+    int i;
+    int x, y;
+
+    a = 0;
+    for (i = 0; i < 359; i += 3)
+    {
+        r = i * M_PI / 180.0;
+        x = 400 + 400 * sin(r) * sin(r) * cos(r / 3);
+        y = SCREEN_HEIGHT - 300 + 300 * sin(r*2) * cos(r);
+        c = malloc(sizeof(struct bob *));
+        c->x = x;
+        c->y = y;
+        c->a = a;
+        a += 5;
+        if (a > 359) a -= 359;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
+    return h;
+}
+
+
+struct bob *build_bob_list3(void)
+{
+    struct bob *h = NULL;
+    struct bob *c;
+    struct bob *p = NULL;
+    float r;
+    int a;
+    int i;
+    int x, y;
+
+    a = 0;
+    for (i = 0; i < 359; i += 3)
+    {
+        r = i * M_PI / 180.0;
+        x = 400 + 400 * sin(r / 2) * sin(r);
+        y = SCREEN_HEIGHT - 300 + 300 * cos(r*2) * cos(r);
+        c = malloc(sizeof(struct bob *));
+        c->x = x;
+        c->y = y;
+        c->a = a;
+        a += 5;
+        if (a > 359) a -= 359;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
+    return h;
+}
+
 struct bob_list *build_bob_lists(void)
 {
     struct bob_list *h;
@@ -89,6 +152,25 @@ printf("building: x: %d, y: %d\n", c->head->x, c->head->y);
     c->bx = 10;
     c->play_time = 90;
     c->angle = 0;
+    p->next = c;
+    p = c;
+
+    c = malloc(sizeof(struct bob_list *));
+    c->head = build_bob_list3();
+    c->rx = 10;
+    c->gx = 0;
+    c->bx = 10;
+    c->play_time = 250;
+    c->angle = 0;
+    p->next = c;
+    p = c;
+
+    c = malloc(sizeof(struct bob_list *));
+    c->head = build_bob_list4();
+    c->rx = 0;
+    c->gx = 10;
+    c->bx = 0;
+    c->play_time = 150;
     p->next = c;
     p = c;
 
