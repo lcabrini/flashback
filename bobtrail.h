@@ -1,21 +1,22 @@
-#ifndef BOBS_H
-#define BOBS_H
+#ifndef BOBTRAIL_H
+#define BOBTRAIL_H
 
 #include <stdlib.h>
 #include <math.h>
 #include "common.h"
+#include "demo.h"
 
-struct bob
+struct path
 {
     int x;
     int y;
     int a;
-    struct bob *next;
+    struct path *next;
 };
 
-struct bob_list
+struct bobtrail
 {
-    struct bob *head;
+    struct path *head;
     int rx;
     int gx;
     int bx;
@@ -24,15 +25,19 @@ struct bob_list
     int angle;
     int size;
     int count;
-    struct bob_list *next;
+    struct bobtrail *next;
 };
 
-struct bob *build_bob_list1(void);
-struct bob *build_bob_list2(void);
-struct bob *build_bob_list3(void);
-struct bob *build_bob_list4(void);
-struct bob_list *build_bob_lists(void);
-void destroy_bob_list(struct bob *list);
-//void draw_bobs(void);
+struct scene *create_bobtrail_scene(void);
+void prepare_bobtrail_scene(void);
+void perform_bobtrail_scene(void);
+void teardown_bobtrail_scene(void);
+struct path *build_path1(void);
+struct path *build_path2(void);
+struct path *build_path3(void);
+struct path *build_path4(void);
+void destroy_bobtrails(void);
+
+struct bobtrail *current_bobtrail;
 
 #endif /* BOBS_H */

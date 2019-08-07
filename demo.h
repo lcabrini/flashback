@@ -19,7 +19,7 @@ void prepare_demo(void);
 void destroy_demo(void);
 void run_demo(void);
 
-extern struct scene *add_bobtrail_scene(void);
+extern struct scene *create_bobtrail_scene(void);
 extern void update(void);
 
 struct scene *demo;

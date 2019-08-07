@@ -1,152 +1,34 @@
-#include "bobs.h"
+#include "bobtrail.h"
 #include <stdio.h>
 
-struct bob *build_bob_list1(void)
+struct scene *create_bobtrail_scene()
 {
-    struct bob *h = NULL;
-    struct bob *c;
-    struct bob *p = NULL;
-    float r;
-    int a;
-    int i;
-    int x, y;
+    struct scene *s;
 
-    a = 0;
-    for (i = 0; i <360; i += 3)
-    {
-        r = i * M_PI / 180.0;
-        x = 400 + 400 * sin(2 * r) * cos(3 * r);
-        y = SCREEN_HEIGHT - 300 + 300 * cos(r / 2) * sin(r) * sin(r);
-        c = malloc(sizeof(struct bob *));
-        c->x = x;
-        c->y = y;
-        c->a = a;
-        a += 5;
-        if (a > 359) a -= 359;
-        if (!h) h = c;
-        if (p) p->next = c;
-        p = c;
-    }
-
-printf("list1: x: %d, y: %d\n", h->x, h->y);
-    c->next = h;
-    return h;
+    s = malloc(sizeof(struct scene *));
+    s->prepare = &prepare_bobtrail_scene;
+    s->perform = &perform_bobtrail_scene;
+    s->teardown = &teardown_bobtrail_scene;
+    return s;
 }
 
-struct bob *build_bob_list2(void)
+void prepare_bobtrail_scene(void)
 {
-    struct bob *h = NULL;
-    struct bob *c;
-    struct bob *p = NULL;
-    float r;
-    int a;
-    int i;
-    int x, y;
-
-    a = 0;
-    for (i = 0; i < 359; i += 3)
-    {
-        r = i * M_PI / 180.0;
-        x = 400 + 350 * sin(r);
-        y = SCREEN_HEIGHT - 300 + 250 * cos(r);
-        c = malloc(sizeof(struct bob *));
-        c->x = x;
-        c->y = y;
-        c->a = a;
-        a += 5;
-        if (a > 359) a -= 359;
-        if (!h) h = c;
-        if (p) p->next = c;
-        p = c;
-    }
-
-    c->next = h;
-    return h;
-}
-
-struct bob *build_bob_list4(void)
-{
-    struct bob *h = NULL;
-    struct bob *c;
-    struct bob *p = NULL;
-    float r;
-    int a;
-    int i;
-    int x, y;
-
-    a = 0;
-    for (i = 0; i < 359; i += 3)
-    {
-        r = i * M_PI / 180.0;
-        x = 400 + 400 * sin(r) * sin(r) * cos(r / 3);
-        y = SCREEN_HEIGHT - 300 + 300 * sin(r*2) * cos(r);
-        c = malloc(sizeof(struct bob *));
-        c->x = x;
-        c->y = y;
-        c->a = a;
-        a += 5;
-        if (a > 359) a -= 359;
-        if (!h) h = c;
-        if (p) p->next = c;
-        p = c;
-    }
-
-    c->next = h;
-    return h;
-}
-
-
-struct bob *build_bob_list3(void)
-{
-    struct bob *h = NULL;
-    struct bob *c;
-    struct bob *p = NULL;
-    float r;
-    int a;
-    int i;
-    int x, y;
-
-    a = 0;
-    for (i = 0; i < 359; i += 3)
-    {
-        r = i * M_PI / 180.0;
-        x = 400 + 400 * sin(r / 2) * sin(r);
-        y = SCREEN_HEIGHT - 300 + 300 * cos(r*2) * cos(r);
-        c = malloc(sizeof(struct bob *));
-        c->x = x;
-        c->y = y;
-        c->a = a;
-        a += 5;
-        if (a > 359) a -= 359;
-        if (!h) h = c;
-        if (p) p->next = c;
-        p = c;
-    }
-
-    c->next = h;
-    return h;
-}
-
-struct bob_list *build_bob_lists(void)
-{
-    struct bob_list *h;
-    struct bob_list *c;
-    struct bob_list *p = NULL;
+    struct bobtrail *c, *p;
     int i;
 
-    c = malloc(sizeof(struct bob_list *));
-    c->head = build_bob_list1();
-    h = c;
+    c = malloc(sizeof(struct bobtrail *));
+    c->head = build_path1();
+    current_bobtrail = c;
     c->rx = 10;
     c->gx = 10;
     c->bx = 0;
     c->play_time = 150;
     c->angle = 0;
     p = c;
-printf("building: x: %d, y: %d\n", c->head->x, c->head->y);
 
-    c = malloc(sizeof(struct bob_list *));
-    c->head = build_bob_list2();
+    c = malloc(sizeof(struct bobtrail *));
+    c->head = build_path2();
     c->rx = 0;
     c->gx = 0;
     c->bx = 10;
@@ -155,8 +37,8 @@ printf("building: x: %d, y: %d\n", c->head->x, c->head->y);
     p->next = c;
     p = c;
 
-    c = malloc(sizeof(struct bob_list *));
-    c->head = build_bob_list3();
+    c = malloc(sizeof(struct bobtrail *));
+    c->head = build_path3();
     c->rx = 10;
     c->gx = 0;
     c->bx = 10;
@@ -165,8 +47,8 @@ printf("building: x: %d, y: %d\n", c->head->x, c->head->y);
     p->next = c;
     p = c;
 
-    c = malloc(sizeof(struct bob_list *));
-    c->head = build_bob_list4();
+    c = malloc(sizeof(struct bobtrail *));
+    c->head = build_path4();
     c->rx = 0;
     c->gx = 10;
     c->bx = 0;
@@ -175,15 +57,116 @@ printf("building: x: %d, y: %d\n", c->head->x, c->head->y);
     p = c;
 
     c->next = h;
+}
+
+void perform_bobtrail_scene(void)
+{
+
+    /* TODO */
+}
+
+void teardown_bobtrail_scene(void)
+{
+    /* TODO */
+}
+
+struct path *build_path1(void)
+{
+    struct path *h, *c, *p;
+    int a;
+    float r;
+    int x, y;
+
+    h = p = NULL;
+    for (a = 0; a < 360; a += 3)
+    {
+        r = a * M_PI / 180.0;
+        x = CENTER_X + CENTER_X * sin(2 * r) * cos(3 * r);
+        y = SCREEN_HEIGHT - CENTER_Y + CENTER_Y * cos(r / 2) * 
+            sin(r) * sin(r);
+        c = malloc(sizeof(struct path *));
+        c->x = x;
+        c->y = y;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
     return h;
 }
 
-void destroy_bob_list(struct bob *list)
+struct path *build_path2(void)
 {
+    struct path *h, *c, *p;
+    int a;
+    float r;
+    int x, y;
+
+    h = p = NULL;
+    for (a = 0; a < 360; a += 3)
+    {
+        r = a * M_PI / 180.0;
+        x = CENTER_X + (CENTER_X - 50) * sin(r);
+        y = SCREEN_HEIGHT - CENTER_Y + (CENTER_Y - 50) * cos(r);
+        c = malloc(sizeof(struct path *));
+        c->x = x;
+        c->y = y;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
+    return h;
 }
 
-/*
-void draw_bobs(void)
+struct path *build_path3(void)
 {
+    struct path *h, *c, *p;
+    int a;
+    float r;
+    int x, y;
+
+    h = p = NULL;
+    for (a = 0; a < 360; a += 3)
+    {
+        r = a * M_PI / 180.0;
+        x = CENTER_X + CENTER_X * sin(r / 2) * sin(r);
+        y = SCREEN_HEIGHT - CENTER_Y + CENTER_Y * cos(r * 2) * cos(r);
+        c = malloc(sizeof(struct path *));
+        c->x = x;
+        c->y = y;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
+    return h;
 }
-*/
+
+struct path *build_path4(void)
+{
+    struct path *h, *c, *p;
+    int a;
+    float r;
+    int x, y;
+
+    h = p = NULL;
+    for (a = 0; a < 360; a += 3)
+    {
+        r = a * M_PI / 180.0;
+        x = CENTER_X + CENTER_X * sin(r) * sin(r) * cos(r / 3);
+        y = SCREEN_HEIGHT - CENTER_Y + CENTER_Y * sin(r*2) * cos(r);
+        c = malloc(sizeof(struct path *));
+        c->x = x;
+        c->y = y;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
+    return h;
+}
