@@ -4,7 +4,11 @@ int main(int argc, char *argv[])
 {
     atexit(close_sdl);
     init_sdl();
+    prepare_demo();
+    run_demo();
+    destroy_demo();
 
+    /*
     while (1)
     {
         handle_events();
@@ -12,6 +16,7 @@ int main(int argc, char *argv[])
         update();
         SDL_Delay(50);
     }
+    */
 
     return 0;
 }

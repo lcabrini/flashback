@@ -8,8 +8,9 @@ void die(char *message);
 
 extern void init_sdl(void);
 extern void close_sdl(void);
-extern void draw(void);
 extern void update(void);
-extern void handle_events(void);
+extern void prepare_demo(void);
+extern void run_demo(void);
+extern void destroy_demo(void);
 
 #endif /* MAIN_H */

@@ -21,6 +21,7 @@ void run_demo(void);
 
 extern struct scene *create_bobtrail_scene(void);
 extern void update(void);
+extern void handle_events(void);
 
 struct scene *demo;
 struct scene *current_scene;

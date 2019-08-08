@@ -17,6 +17,8 @@ void prepare_bobtrail_scene(void)
     struct bobtrail *c, *p;
     int i;
 
+    fading_bobtrail = NULL;
+
     c = malloc(sizeof(struct bobtrail *));
     c->head = build_path1();
     current_bobtrail = c;
@@ -56,13 +58,15 @@ void prepare_bobtrail_scene(void)
     p->next = c;
     p = c;
 
-    c->next = h;
+    c->next = current_bobtrail;
 }
 
 void perform_bobtrail_scene(void)
 {
-
-    /* TODO */
+    clear_texture();
+    if (fading_bobtrail)
+        draw_fading_bobtrail();
+    draw_current_bobtrail();
 }
 
 void teardown_bobtrail_scene(void)
@@ -169,4 +173,94 @@ struct path *build_path4(void)
 
     c->next = h;
     return h;
+}
+
+void draw_current_bobtrail(void)
+{
+    draw_bobtrail(
+            current_bobtrail->head,
+            current_bobtrail->count,
+            current_bobtrail->size,
+            current_bobtrail->rx,
+            current_bobtrail->gx,
+            current_bobtrail->bx,
+            current_bobtrail->angle);
+    current_bobtrail->head = current_bobtrail->head->next;
+    if (current_bobtrail->count < TRAIL_LENGTH)
+        current_bobtrail->count += 1;
+    current_bobtrail->angle += ROTATION;
+    if (current_bobtrail->angle > 359)
+        current_bobtrail->angle -= 359;
+    current_bobtrail->frame += 1;
+
+    if (current_bobtrail->frame > current_bobtrail->play_time)
+    {
+        fading_bobtrail = current_bobtrail;
+        current_bobtrail = current_bobtrail->next;
+        current_bobtrail->size = MAX_BOB_SIZE;
+        current_bobtrail->count = 1;
+        current_bobtrail->frame = 0;
+    }
+}
+
+void draw_fading_bobtrail(void)
+{
+    draw_bobtrail(
+            fading_bobtrail->head,
+            fading_bobtrail->count,
+            fading_bobtrail->size,
+            fading_bobtrail->rx,
+            fading_bobtrail->gx,
+            fading_bobtrail->bx,
+            fading_bobtrail->angle);
+    fading_bobtrail->head = fading_bobtrail->head->next;
+    fading_bobtrail->size -= SIZE_STEP;
+    fading_bobtrail->angle += ROTATION;
+    if (fading_bobtrail->angle > 359)
+        fading_bobtrail->angle -= 359;
+    if (fading_bobtrail->size < 1)
+        fading_bobtrail = NULL;
+}
+
+void draw_bobtrail(struct path *path, int count, int to_size, int rx, 
+        int gx, int bx, int angle)
+{
+    SDL_Texture *t;
+    SDL_Rect sr, dr;
+    int s;
+    int i;
+
+    t = SDL_CreateTexture(
+            renderer, 
+            SDL_PIXELFORMAT_ARGB8888,
+            SDL_TEXTUREACCESS_TARGET,
+            MAX_BOB_SIZE,
+            MAX_BOB_SIZE);
+    s = 1;
+
+    for (i = 0; i < count; ++i)
+    {
+        SDL_SetRenderTarget(renderer, t);
+        SDL_SetRenderDrawColor(renderer, i * rx, i * gx, i * bx, 0);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderTarget(renderer, texture);
+
+        sr.x = 0;
+        sr.y = 0;
+        sr.w = s;
+        sr.h = s;
+
+        dr.x = path->x;
+        dr.y = path->y;
+        dr.w = s;
+        dr.h = s;
+
+        SDL_RenderCopyEx(renderer, t, &sr, &dr, angle, NULL, 0);
+        if (s < to_size) ++s;
+        path = path->next;
+    }
+
+    SDL_DestroyTexture(t);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_SetRenderTarget(renderer, NULL);
 }
