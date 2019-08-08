@@ -9,7 +9,7 @@
 #define MAX_BOB_SIZE 50
 #define SIZE_STEP 2
 #define ROTATION 10
-#define TRAIL_LENGTH 50
+#define TRAIL_LENGTH 25
 
 struct path
 {
