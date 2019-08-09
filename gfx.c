@@ -37,6 +37,9 @@ void init_sdl(void)
 
 void close_sdl(void)
 {
+    if (demo)
+        demo->teardown();
+
     if (texture)
         SDL_DestroyTexture(texture);
 

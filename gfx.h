@@ -4,6 +4,7 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "common.h"
+#include "demo.h"
 
 #define SCREEN_TITLE "Flashback"
 

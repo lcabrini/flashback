@@ -71,7 +71,31 @@ void perform_bobtrail_scene(void)
 
 void teardown_bobtrail_scene(void)
 {
-    /* TODO */
+    struct bobtrail *c, *p;
+
+    c = current_bobtrail;
+    while (c)
+    {
+        destroy_path(c->head);
+        p = c;
+        c = c->next;
+        p->next = NULL;
+        free(p);
+    }
+}
+
+void destroy_path(struct path *head)
+{
+    struct path *c, *p;
+
+    c = head;
+    while (c)
+    {
+        p = c;
+        c = c->next;
+        p->next = NULL;
+        free(p);
+    }
 }
 
 struct path *build_path1(void)
