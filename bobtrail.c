@@ -5,7 +5,7 @@ struct scene *create_bobtrail_scene()
 {
     struct scene *s;
 
-    s = malloc(sizeof(struct scene *));
+    s = calloc(1, sizeof(struct scene *));
     s->prepare = &prepare_bobtrail_scene;
     s->perform = &perform_bobtrail_scene;
     s->teardown = &teardown_bobtrail_scene;
@@ -19,7 +19,7 @@ void prepare_bobtrail_scene(void)
 
     fading_bobtrail = NULL;
 
-    c = malloc(sizeof(struct bobtrail *));
+    c = calloc(1, sizeof(struct bobtrail *));
     c->head = build_path1();
     current_bobtrail = c;
     c->rx = 10;
@@ -29,7 +29,7 @@ void prepare_bobtrail_scene(void)
     c->angle = 0;
     p = c;
 
-    c = malloc(sizeof(struct bobtrail *));
+    c = calloc(1, sizeof(struct bobtrail *));
     c->head = build_path2();
     c->rx = 0;
     c->gx = 0;
@@ -39,7 +39,7 @@ void prepare_bobtrail_scene(void)
     p->next = c;
     p = c;
 
-    c = malloc(sizeof(struct bobtrail *));
+    c = calloc(1, sizeof(struct bobtrail *));
     c->head = build_path3();
     c->rx = 10;
     c->gx = 0;
@@ -49,7 +49,7 @@ void prepare_bobtrail_scene(void)
     p->next = c;
     p = c;
 
-    c = malloc(sizeof(struct bobtrail *));
+    c = calloc(1, sizeof(struct bobtrail *));
     c->head = build_path4();
     c->rx = 0;
     c->gx = 10;
@@ -73,6 +73,7 @@ void teardown_bobtrail_scene(void)
 {
     struct bobtrail *c, *p;
 
+    dprint("Tearing down bobtrail scene");
     c = current_bobtrail;
     while (c)
     {
@@ -82,20 +83,29 @@ void teardown_bobtrail_scene(void)
         p->next = NULL;
         free(p);
     }
+
+    dprint("Done tearing down bobtrail scene");
 }
 
 void destroy_path(struct path *head)
 {
     struct path *c, *p;
 
+    dprint("Destroying path");
     c = head;
     while (c)
     {
         p = c;
-        c = c->next;
-        p->next = NULL;
-        free(p);
+        if (c) c = c->next;
+        if (p)
+        {
+            dprint("destroy path: (%d, %d)\n", p->x, p->y);
+            p->next = NULL;
+            free(p);
+        }
     }
+
+    dprint("Done destroying path");
 }
 
 struct path *build_path1(void)
@@ -112,7 +122,7 @@ struct path *build_path1(void)
         x = CENTER_X + CENTER_X * sin(2 * r) * cos(3 * r);
         y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * cos(r / 2) * sin(r) 
                 * sin(r));
-        c = malloc(sizeof(struct path *));
+        c = calloc(1, sizeof(struct path *));
         c->x = x;
         c->y = y;
         if (!h) h = c;
@@ -137,7 +147,7 @@ struct path *build_path2(void)
         r = a * M_PI / 180.0;
         x = CENTER_X + (CENTER_X - 50) * sin(r);
         y = SCREEN_HEIGHT - (CENTER_Y + (CENTER_Y - 50) * cos(r));
-        c = malloc(sizeof(struct path *));
+        c = calloc(1, sizeof(struct path *));
         c->x = x;
         c->y = y;
         if (!h) h = c;
@@ -162,7 +172,7 @@ struct path *build_path3(void)
         r = a * M_PI / 180.0;
         x = CENTER_X + CENTER_X * sin(r / 2) * sin(r);
         y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * cos(r * 2) * cos(r));
-        c = malloc(sizeof(struct path *));
+        c = calloc(1, sizeof(struct path *));
         c->x = x;
         c->y = y;
         if (!h) h = c;
@@ -187,7 +197,7 @@ struct path *build_path4(void)
         r = a * M_PI / 180.0;
         x = CENTER_X + CENTER_X * sin(r) * sin(r) * cos(r / 3);
         y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * sin(r*2) * cos(r));
-        c = malloc(sizeof(struct path *));
+        c = calloc(1, sizeof(struct path *));
         c->x = x;
         c->y = y;
         if (!h) h = c;

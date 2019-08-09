@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
     init_sdl();
     prepare_demo();
     run_demo();
-    destroy_demo();
+    /* destroy_demo(); */
 
     /*
     while (1)
