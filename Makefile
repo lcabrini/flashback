@@ -14,7 +14,7 @@ all: $(OBJ)
 	$(CC) $(LDFLAGS) -o $(PROG) $(OBJ)
 
 .PHONY: debug
-debug: CFLAGS += -DDEBUG
+debug: CFLAGS += -DDEBUG -g
 debug: all
 
 %.o: %.c %.h $(DEPS) 
