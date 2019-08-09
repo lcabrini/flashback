@@ -86,8 +86,8 @@ struct path *build_path1(void)
     {
         r = a * M_PI / 180.0;
         x = CENTER_X + CENTER_X * sin(2 * r) * cos(3 * r);
-        y = SCREEN_HEIGHT - CENTER_Y + CENTER_Y * cos(r / 2) * 
-            sin(r) * sin(r);
+        y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * cos(r / 2) * sin(r) 
+                * sin(r));
         c = malloc(sizeof(struct path *));
         c->x = x;
         c->y = y;
@@ -112,7 +112,7 @@ struct path *build_path2(void)
     {
         r = a * M_PI / 180.0;
         x = CENTER_X + (CENTER_X - 50) * sin(r);
-        y = SCREEN_HEIGHT - CENTER_Y + (CENTER_Y - 50) * cos(r);
+        y = SCREEN_HEIGHT - (CENTER_Y + (CENTER_Y - 50) * cos(r));
         c = malloc(sizeof(struct path *));
         c->x = x;
         c->y = y;
@@ -137,7 +137,7 @@ struct path *build_path3(void)
     {
         r = a * M_PI / 180.0;
         x = CENTER_X + CENTER_X * sin(r / 2) * sin(r);
-        y = SCREEN_HEIGHT - CENTER_Y + CENTER_Y * cos(r * 2) * cos(r);
+        y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * cos(r * 2) * cos(r));
         c = malloc(sizeof(struct path *));
         c->x = x;
         c->y = y;
@@ -162,7 +162,7 @@ struct path *build_path4(void)
     {
         r = a * M_PI / 180.0;
         x = CENTER_X + CENTER_X * sin(r) * sin(r) * cos(r / 3);
-        y = SCREEN_HEIGHT - CENTER_Y + CENTER_Y * sin(r*2) * cos(r);
+        y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * sin(r*2) * cos(r));
         c = malloc(sizeof(struct path *));
         c->x = x;
         c->y = y;
