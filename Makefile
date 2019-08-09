@@ -13,6 +13,10 @@ OBJ := $(SRC:.c=.o)
 all: $(OBJ)
 	$(CC) $(LDFLAGS) -o $(PROG) $(OBJ)
 
+.PHONY: debug
+debug: CFLAGS += -DDEBUG
+debug: all
+
 %.o: %.c %.h $(DEPS) 
 	$(CC) -c $(CFLAGS) -o $@ $<
 clean:
