@@ -4,6 +4,7 @@ int main(int argc, char *argv[])
 {
     atexit(close_sdl);
     init_sdl();
+    init_music();
     prepare_demo();
     run_demo();
     /* destroy_demo(); */

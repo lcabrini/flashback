@@ -61,6 +61,7 @@ void prepare_bobtrail_scene(void)
     c->next = current_bobtrail;
 
     set_background("bobtrail-bg.jpg");
+    play_music("bobtrail-music.mp3");
 }
 
 void perform_bobtrail_scene(void)

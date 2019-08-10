@@ -50,6 +50,7 @@ void draw_bobtrail(struct path *path, int count, int to_size, int rx,
 extern void clear_texture(void);
 extern void set_background(char *image);
 extern void show_background(void);
+extern void play_music(char *track);
 
 struct bobtrail *current_bobtrail;
 struct bobtrail *fading_bobtrail;

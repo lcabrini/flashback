@@ -45,6 +45,7 @@ void close_sdl(void)
         demo->teardown();
 
     IMG_Quit();
+    close_music();
 
     if (texture)
         SDL_DestroyTexture(texture);

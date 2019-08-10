@@ -15,6 +15,7 @@ void clear_texture(void);
 void set_background(char *image);
 void show_background(void);
 
+extern void close_music();
 extern void die(char *message);
 
 SDL_Window *window;
