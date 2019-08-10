@@ -59,11 +59,14 @@ void prepare_bobtrail_scene(void)
     p = c;
 
     c->next = current_bobtrail;
+
+    set_background("bobtrail-bg.jpg");
 }
 
 void perform_bobtrail_scene(void)
 {
     clear_texture();
+    show_background();
     if (fading_bobtrail)
         draw_fading_bobtrail();
     draw_current_bobtrail();

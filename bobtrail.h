@@ -46,7 +46,10 @@ void draw_current_bobtrail(void);
 void draw_fading_bobtrail(void);
 void draw_bobtrail(struct path *path, int count, int to_size, int rx,
         int gx, int bx, int angle);
+
 extern void clear_texture(void);
+extern void set_background(char *image);
+extern void show_background(void);
 
 struct bobtrail *current_bobtrail;
 struct bobtrail *fading_bobtrail;

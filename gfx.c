@@ -11,6 +11,8 @@ void init_sdl(void)
         die("Unable to initialize SDL");
     }
 
+    IMG_Init(IMG_INIT_JPG);
+
     window = SDL_CreateWindow(
             SCREEN_TITLE,
             SDL_WINDOWPOS_UNDEFINED,
@@ -33,12 +35,16 @@ void init_sdl(void)
             SCREEN_HEIGHT);
     if (!texture)
         die("Could not create texture");
+
+    background = NULL;
 }
 
 void close_sdl(void)
 {
     if (demo)
         demo->teardown();
+
+    IMG_Quit();
 
     if (texture)
         SDL_DestroyTexture(texture);
@@ -55,6 +61,25 @@ void clear_texture(void)
     SDL_SetRenderTarget(renderer, texture);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
+}
+
+void set_background(char *image)
+{
+    SDL_Surface *s;
+
+    if (background)
+        SDL_DestroyTexture(background);
+
+    s = IMG_Load(image);
+    background = SDL_CreateTextureFromSurface(renderer, s);
+    SDL_FreeSurface(s);
+}
+
+void show_background(void)
+{
+    SDL_SetRenderTarget(renderer, texture);
+    SDL_RenderCopy(renderer, background, NULL, NULL);
+    //SDL_RenderPresent(renderer);
 }
 
 void update(void)
