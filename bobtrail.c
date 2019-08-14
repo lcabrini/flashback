@@ -22,6 +22,7 @@ void prepare_bobtrail_scene(void)
     c = calloc(1, sizeof(struct bobtrail));
     c->head = build_path1();
     current_bobtrail = c;
+    c->size = MAX_BOB_SIZE;
     c->rx = 10;
     c->gx = 10;
     c->bx = 0;
@@ -31,6 +32,7 @@ void prepare_bobtrail_scene(void)
 
     c = calloc(1, sizeof(struct bobtrail));
     c->head = build_path2();
+    c->size = MAX_BOB_SIZE;
     c->rx = 0;
     c->gx = 0;
     c->bx = 10;
@@ -41,6 +43,7 @@ void prepare_bobtrail_scene(void)
 
     c = calloc(1, sizeof(struct bobtrail));
     c->head = build_path3();
+    c->size = MAX_BOB_SIZE;
     c->rx = 10;
     c->gx = 0;
     c->bx = 10;
@@ -51,6 +54,7 @@ void prepare_bobtrail_scene(void)
 
     c = calloc(1, sizeof(struct bobtrail));
     c->head = build_path4();
+    c->size = MAX_BOB_SIZE;
     c->rx = 0;
     c->gx = 10;
     c->bx = 0;
