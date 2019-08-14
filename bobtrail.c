@@ -60,6 +60,7 @@ void prepare_bobtrail_scene(void)
 
     c->next = current_bobtrail;
 
+    init_fade();
     set_background("bobtrail-bg.jpg");
     play_music("bobtrail-music.mp3");
 }
@@ -71,6 +72,7 @@ void perform_bobtrail_scene(void)
     if (fading_bobtrail)
         draw_fading_bobtrail();
     draw_current_bobtrail();
+    fade();
 }
 
 void teardown_bobtrail_scene(void)
@@ -87,6 +89,8 @@ void teardown_bobtrail_scene(void)
         p->next = NULL;
         free(p);
     }
+
+    destroy_fade();
 
     dprint("Done tearing down bobtrail scene");
 }
