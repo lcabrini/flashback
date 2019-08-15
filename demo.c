@@ -33,7 +33,7 @@ void run_demo(void)
             handle_events();
             current_scene->perform();
             update();
-            SDL_Delay(50);   /* TODO: replace this */
+            SDL_Delay(30);   /* TODO: replace this */
         }
 
         current_scene->teardown();
