@@ -41,6 +41,7 @@ struct path *build_path1(void);
 struct path *build_path2(void);
 struct path *build_path3(void);
 struct path *build_path4(void);
+struct path *build_path5(void);
 void destroy_path(struct path *head);
 void draw_current_bobtrail(void);
 void draw_fading_bobtrail(void);

@@ -62,6 +62,16 @@ void prepare_bobtrail_scene(void)
     p->next = c;
     p = c;
 
+    c = calloc(1, sizeof(struct bobtrail));
+    c->head = build_path5();
+    c->size = MAX_BOB_SIZE;
+    c->rx = 10;
+    c->gx = 0;
+    c->bx = 0;
+    c->play_time = 150;
+    p->next = c;
+    p = c;
+
     c->next = current_bobtrail;
 
     init_fade();
@@ -209,6 +219,31 @@ struct path *build_path4(void)
         r = a * M_PI / 180.0;
         x = CENTER_X + CENTER_X * sin(r) * sin(r) * cos(r / 3);
         y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * sin(r*2) * cos(r));
+        c = calloc(1, sizeof(struct path));
+        c->x = x;
+        c->y = y;
+        if (!h) h = c;
+        if (p) p->next = c;
+        p = c;
+    }
+
+    c->next = h;
+    return h;
+}
+
+struct path *build_path5(void)
+{
+    struct path *h, *c, *p;
+    int a;
+    float r;
+    int x, y;
+
+    h = p = NULL;
+    for (a = 0; a < 360; a += 3)
+    {
+        r = a * M_PI / 180.0;
+        x = CENTER_X + CENTER_X * sin(r/4) * sin(r) * cos(r);
+        y = SCREEN_HEIGHT - (CENTER_Y + CENTER_Y * sin(r*3) * cos(r/2));
         c = calloc(1, sizeof(struct path));
         c->x = x;
         c->y = y;
