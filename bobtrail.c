@@ -20,7 +20,7 @@ void prepare_bobtrail_scene(void)
     fading_bobtrail = NULL;
 
     c = calloc(1, sizeof(struct bobtrail));
-    c->head = build_path1();
+    c->head = build_yellow_path();
     current_bobtrail = c;
     c->size = MAX_BOB_SIZE;
     c->rx = 10;
@@ -31,7 +31,7 @@ void prepare_bobtrail_scene(void)
     p = c;
 
     c = calloc(1, sizeof(struct bobtrail));
-    c->head = build_path2();
+    c->head = build_blue_path();
     c->size = MAX_BOB_SIZE;
     c->rx = 0;
     c->gx = 0;
@@ -42,7 +42,7 @@ void prepare_bobtrail_scene(void)
     p = c;
 
     c = calloc(1, sizeof(struct bobtrail));
-    c->head = build_path3();
+    c->head = build_magenta_path();
     c->size = MAX_BOB_SIZE;
     c->rx = 10;
     c->gx = 0;
@@ -53,7 +53,7 @@ void prepare_bobtrail_scene(void)
     p = c;
 
     c = calloc(1, sizeof(struct bobtrail));
-    c->head = build_path4();
+    c->head = build_green_path();
     c->size = MAX_BOB_SIZE;
     c->rx = 0;
     c->gx = 10;
@@ -63,7 +63,7 @@ void prepare_bobtrail_scene(void)
     p = c;
 
     c = calloc(1, sizeof(struct bobtrail));
-    c->head = build_path5();
+    c->head = build_red_path();
     c->size = MAX_BOB_SIZE;
     c->rx = 10;
     c->gx = 0;
@@ -130,7 +130,7 @@ void destroy_path(struct path *head)
     dprint("Done destroying path");
 }
 
-struct path *build_path1(void)
+struct path *build_yellow_path(void)
 {
     struct path *h, *c, *p;
     int a;
@@ -156,7 +156,7 @@ struct path *build_path1(void)
     return h;
 }
 
-struct path *build_path2(void)
+struct path *build_blue_path(void)
 {
     struct path *h, *c, *p;
     int a;
@@ -181,7 +181,7 @@ struct path *build_path2(void)
     return h;
 }
 
-struct path *build_path3(void)
+struct path *build_magenta_path(void)
 {
     struct path *h, *c, *p;
     int a;
@@ -206,7 +206,7 @@ struct path *build_path3(void)
     return h;
 }
 
-struct path *build_path4(void)
+struct path *build_green_path(void)
 {
     struct path *h, *c, *p;
     int a;
@@ -231,7 +231,7 @@ struct path *build_path4(void)
     return h;
 }
 
-struct path *build_path5(void)
+struct path *build_red_path(void)
 {
     struct path *h, *c, *p;
     int a;
